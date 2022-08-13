@@ -159,8 +159,8 @@ $.fn.serializeObject = function () {
 
     Imagine.loadMedia = function(container = document.documentElement)
     {
-        function loadImg (src, timeout = 1000) {
-            var imgPromise = new Promise((resolve, reject) => {
+        function loadImg (src) {
+            return new Promise((resolve, reject) => {
 
                 let img = new Image()
                     img.onload = () => {
@@ -173,18 +173,17 @@ $.fn.serializeObject = function () {
 
                 img.onerror = reject
                 img.src = src
-            })
-
-            var timer = new Promise((resolve, reject) => { setTimeout(reject, timeout) })
-            return Promise.race([imgPromise, timer])
+            });
         }
 
-        function loadImgAll (imgList, timeout = 1000) {
+        function loadImgAll (imgList) {
+
             return new Promise((resolve, reject) => {
                 Promise.all(imgList
-                    .map(src => loadImg(src, timeout))
+                    .map(src => loadImg(src))
                     .map(p => p.catch(e => false))
-                ).then(results => resolve(results.filter(r => r)))
+                ).then(results => resolve(results.filter(r => r))
+                ).catch(error => { reject(error); })
             })
         }
 
