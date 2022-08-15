@@ -9,7 +9,7 @@
     transform: translate(-50%);
 } */
 
-.imagine-item.zoom { transition: transform .2s; }
+.imagine-item.zoom { animation: transform .2s; }
 .imagine-item.zoom:hover { transform: scale(0.90); }
 
 .imagine {
