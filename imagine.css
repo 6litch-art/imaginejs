@@ -1,14 +1,3 @@
-/* .imagine::before {
-    content: "CLICK";
-    color: #777;
-    letter-spacing: 1px;
-    font-size: 10px;
-    position: absolute;
-    bottom: -30px;
-    left: 50%;
-    transform: translate(-50%);
-} */
-
 .imagine-item.zoom { animation: transform .2s; }
 .imagine-item.zoom:hover { transform: scale(0.90); }
 
