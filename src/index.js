@@ -143,7 +143,7 @@ $.fn.serializeObject = function () {
             let match = srcChecker.exec(prop);
             if (match) collection.add(match[1]);
 
-            if (/^img$/i.test(node.tagName)) collection.add(node.src || node.getAttribute("data-src"));
+            if (/^img$/i.test(node.tagName)) collection.add(node.src)
             else if (/^frame$/i.test(node.tagName)) {
 
                 try {
@@ -172,7 +172,7 @@ $.fn.serializeObject = function () {
                 }
 
                 img.onerror = reject
-                img.src = src;
+                img.src = src
             });
         }
 
@@ -198,14 +198,12 @@ $.fn.serializeObject = function () {
 
             $(images).each(function(i)
             {
-                // if(!metadata) return;
-
                 gridX = parseInt($(this).data("x")) || 1;
                 gridY = parseInt($(this).data("y")) || 1;
                 w = metadata[i].width;
                 h = metadata[i].height;
 
-                img = $(this).attr("src") || this.getAttribute("data-src");
+                img = $(this).attr("src");
                 delay = 0.0;
 
                 var container = $("<div>").addClass("imagine");
