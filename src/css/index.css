@@ -26,3 +26,18 @@
     transition: all 0.6s cubic-bezier(0.71, 0.05, 0.09, 0.91);
     transition-delay: 0s;
 }
+
+img[data-src] { transition:all 0.25s ease !important; }
+img[data-src]:not(.loaded) {
+	opacity: 0;
+	visibility: hidden;
+}
+
+.lazybox.loading { animation: blink 2s infinite; }
+@keyframes blink {
+	0%		{ background-color: transparent;}
+	25%		{ background-color: #EFEFEFAA;}
+	50%		{ background-color: transparent;}
+	75%		{ background-color: #EFEFEFAA;}
+	100%	{ background-color: transparent;}
+}
