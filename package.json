@@ -4,7 +4,7 @@
   "description": "Imagine JS library",
   "main": "src/index.js",
   "repository": {
-    "url": "git@gitlab.glitchr.dev:public-repository/javascript/imaginejs.git",
+    "url": "ssh://git@gitlab.glitchr.dev:public-repository/javascript/imaginejs.git",
     "type": "git"
   },
   "author": "Marco Meyer <marco.meyer@glitchr.io>",
