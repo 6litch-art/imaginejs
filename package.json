@@ -1,6 +1,6 @@
 {
   "name": "@glitchr/imaginejs",
-  "version": "1.0.22",
+  "version": "1.0.23",
   "description": "Imagine JS library",
   "main": "src/index.js",
   "repository": {
