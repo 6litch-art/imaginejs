@@ -16,7 +16,6 @@ $.fn.serializeObject = function () {
     return o;
 };
 
-
 (function (root, factory) {
 
     if (typeof define === 'function' && define.amd) {
@@ -36,6 +35,8 @@ $.fn.serializeObject = function () {
 
         "debug"       : false,
         "disable"     : false,
+        "rootMargin"  : '100%',
+        "media"       : {"default": "all"}
     };
 
 
@@ -140,7 +141,9 @@ $.fn.serializeObject = function () {
 
         return arr.reduce((collection, node) => {
 
-            let prop = window.getComputedStyle(node, null).getPropertyValue('background-image')
+            let elComputedStyle = window.getComputedStyle(node, null);
+
+            let prop = elComputedStyle.getPropertyValue('background-image');
             let match = srcChecker.exec(prop);
             if (match) collection.add(match[1]);
 
@@ -163,27 +166,31 @@ $.fn.serializeObject = function () {
         lazyloadImages = lazyloadImages || document.querySelectorAll("img[data-src]:not(.loaded)");
         if ("IntersectionObserver" in window) {
 
+                let options = { root:null, rootMargin: Settings.rootMargin };
                 var imageObserver = new IntersectionObserver(function (entries, observer) {
+
                     entries.forEach(function (entry) {
                         if (entry.isIntersecting) {
+
                             var image = entry.target;
                             var lazybox = image.closest(".lazybox");
 
-                                image.onload = function() {
-                                    this.classList.add("loaded");
-                                    this.classList.remove("loading");
-                                    if(lazybox) lazybox.classList.add("loaded");
-                                    if(lazybox) lazybox.classList.remove("loading");
-                                };
+                            image.onload = function() {
+                                this.classList.add("loaded");
+                                this.classList.remove("loading");
+                                if(lazybox) lazybox.classList.add("loaded");
+                                if(lazybox) lazybox.classList.remove("loading");
+                            };
 
-                                if(lazybox) lazybox.classList.add("loading");
-                                image.classList.add("loading");
-                                image.src = image.dataset.src;
+                            if(lazybox) lazybox.classList.add("loading");
+                            image.classList.add("loading");
+                            image.src = image.dataset.src;
 
                             imageObserver.unobserve(image);
                         }
-                });
-            });
+                    });
+
+                }, options);
 
             lazyloadImages.forEach(function (image) {
                 imageObserver.observe(image);
@@ -193,26 +200,27 @@ $.fn.serializeObject = function () {
 
                 var lazyloadThrottleTimeout;
 
-            function lazyload() {
-                if (lazyloadThrottleTimeout) {
-                    clearTimeout(lazyloadThrottleTimeout);
-                }
+                function lazyload(){
 
-                lazyloadThrottleTimeout = setTimeout(function () {
-                    var scrollTop = window.pageYOffset;
-                    lazyloadImages.forEach(function (img) {
-                        if (img.offsetTop < (window.innerHeight + scrollTop)) {
-                            img.src = img.dataset.src;
-                            img.classList.add('loaded');
-                        }
-                    });
-                    if (lazyloadImages.length == 0) {
-                        document.removeEventListener("scroll", lazyload);
-                        window.removeEventListener("resize", lazyload);
-                        window.removeEventListener("orientationChange", lazyload);
+                    if (lazyloadThrottleTimeout) {
+                        clearTimeout(lazyloadThrottleTimeout);
                     }
-                }, 20);
-            }
+
+                    lazyloadThrottleTimeout = setTimeout(function () {
+                        var scrollTop = window.pageYOffset;
+                        lazyloadImages.forEach(function (img) {
+                            if (img.offsetTop < (window.innerHeight + scrollTop + Settings.rootMargin)) {
+                                img.src = img.dataset.src;
+                                img.classList.add('loaded');
+                            }
+                        });
+                        if (lazyloadImages.length == 0) {
+                            document.removeEventListener("scroll", lazyload);
+                            window.removeEventListener("resize", lazyload);
+                            window.removeEventListener("orientationChange", lazyload);
+                        }
+                    }, 20);
+                }
 
             document.addEventListener("scroll", lazyload);
             window.addEventListener("resize", lazyload);
