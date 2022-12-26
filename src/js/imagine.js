@@ -32,7 +32,7 @@ $.fn.serializeObject = function () {
 
     var Settings = Imagine.settings = {
 
-        "debug"           : true,
+        "debug"           : false,
         "disable"         : false,
         "responsive"      : true,
 
@@ -342,7 +342,7 @@ $.fn.serializeObject = function () {
                 return w == 0 ? h : w;
             });
 
-            var bestCandidateSrc = candidates[0].src ?? src;
+            var bestCandidateSrc = candidates.length > 0 ? candidates[0].src : src;
             if (bestCandidateSrc)
                 image.setAttribute("data-src", bestCandidateSrc);
 
