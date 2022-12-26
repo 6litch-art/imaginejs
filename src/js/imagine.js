@@ -288,8 +288,11 @@ $.fn.serializeObject = function () {
 
         function _payload(image) {
 
-            const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
-            const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
+            const vw = Math.max(document.documentElement.clientWidth  || 0, window.innerWidth || 0);
+            const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0);
+
+            const w0 = Math.min(parseInt(window.getComputedStyle(image, null).getPropertyValue('width')) || vw, vw);
+            const h0 = Math.min(parseInt(window.getComputedStyle(image, null).getPropertyValue('height')) || vh, vh);
 
             var candidates = [];
 
@@ -309,38 +312,55 @@ $.fn.serializeObject = function () {
                 if(entry == "undefined" || !entry) return;
                 var array = entry.trim().split(" ");
 
-                var maxHeight = -1;
-                var maxWidth  = -1;
+                var height = -1;
+                var width  = -1;
                 if(array.length > 1) {
 
-                    if(array[1].endsWith("w")) maxWidth = parseInt(array[1]);
-                    else maxHeight = parseInt(array[1])
+                    if(array[1].endsWith("w")) width = parseInt(array[1]);
+                    else height = parseInt(array[1])
                 }
 
                 if(array.length > 2) {
 
-                    if(array[2].endsWith("w")) maxWidth = parseInt(array[2])
-                    else maxHeight = parseInt(array[2])
+                    if(array[2].endsWith("w")) width = parseInt(array[2])
+                    else height = parseInt(array[2])
                 }
 
-                candidates.push({"src": array[0], "maxWidth": maxWidth, "maxHeight": maxHeight});
+                candidates.push({"src": array[0], "width": width, "height": height});
             });
 
-            candidates.sort(function(a, b) {
+            var viewport = {"width": vw, "height": vh};
+            function _sort(property) {
 
-                if( (a.maxWidth  < 0)        && !(b.maxWidth < 0)         ) return  1;
-                if(!(a.maxWidth  < 0)        &&  (b.maxWidth < 0)         ) return -1;
-                if(a.maxWidth  == b.maxWidth) {
+                return function (a,b) {
 
-                    if(a.maxHeight == b.maxHeight) return 0;
-                    if( (a.maxHeight  < 0)        && !(b.maxHeight < 0)         ) return  1;
-                    if(!(a.maxHeight  < 0)        &&  (b.maxHeight < 0)         ) return -1;
+                    if(a[property] == b[property]) return 0;
+                    var signA = (a[property] - viewport[property]) < 0 ? -1 : 1;
+                    var signB = (b[property] - viewport[property]) < 0 ? -1 : 1;
+
+                    if(signA  < 0 && signB >= 0) return  1;
+                    if(signA >= 0 && signB  < 0) return -1;
+
+                    return Math.abs(a[property] - viewport[property]) < Math.abs(b[property] - viewport[property]) ? -1 : 1;
                 }
+            }
 
-                var w = a.maxWidth  > 0 && b.maxWidth  > 0 ? Math.abs(a.maxWidth  - vw) - Math.abs(b.maxWidth  - vw) : 0;
-                var h = a.maxHeight > 0 && b.maxHeight > 0 ? Math.abs(a.maxHeight - vh) - Math.abs(b.maxHeight - vh) : 0;
-                return w == 0 ? h : w;
-            });
+            function _multisort() {
+
+                var props = arguments;
+                return function (obj1, obj2) {
+
+                    var i = 0, result = 0, numberOfProperties = props.length;
+                    while(result === 0 && i < numberOfProperties) {
+                        result = _sort(props[i])(obj1, obj2);
+                        i++;
+                    }
+
+                    return result;
+                }
+            }
+
+            candidates.sort(vw/vh < 1 ? _multisort("height", "width") : _multisort("width", "height"));
 
             var bestCandidateSrc = candidates.length > 0 ? candidates[0].src : src;
             if (bestCandidateSrc)
@@ -368,9 +388,6 @@ $.fn.serializeObject = function () {
         var dataset = $(image).data("srcset");
         if(!dataset) return true;
 
-        const vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
-        const vh = Math.max(document.documentElement.clientHeight || 0, window.innerHeight || 0)
-
         var src = $(image).attr("src") ?? $(image).data("src");
             src = String(src).trim();
 
@@ -388,34 +405,34 @@ $.fn.serializeObject = function () {
             if(entry == "undefined" || !entry) return;
             var array = entry.trim().split(" ");
 
-            var maxHeight = -1;
-            var maxWidth  = -1;
+            var height = -1;
+            var width  = -1;
             if(array.length > 1) {
 
-                if(array[1].endsWith("w")) maxWidth = parseInt(array[1]);
-                else maxHeight = parseInt(array[1])
+                if(array[1].endsWith("w")) width = parseInt(array[1]);
+                else height = parseInt(array[1])
             }
 
             if(array.length > 2) {
 
-                if(array[2].endsWith("w")) maxWidth = parseInt(array[2])
-                else maxHeight = parseInt(array[2])
+                if(array[2].endsWith("w")) width = parseInt(array[2])
+                else height = parseInt(array[2])
             }
 
-            candidates.push({"src": array[0], "maxWidth": maxWidth, "maxHeight": maxHeight});
+            candidates.push({"src": array[0], "width": width, "height": height});
             candidates.sort(function(a, b) {
 
-                if( (a.maxWidth  < 0)        && !(b.maxWidth < 0)         ) return  1;
-                if(!(a.maxWidth  < 0)        &&  (b.maxWidth < 0)         ) return -1;
-                if(a.maxWidth  == b.maxWidth) {
+                if( (a.width  < 0)        && !(b.width < 0)         ) return  1;
+                if(!(a.width  < 0)        &&  (b.width < 0)         ) return -1;
+                if(a.width  == b.width) {
 
-                    if(a.maxHeight == b.maxHeight) return 0;
-                    if( (a.maxHeight  < 0)        && !(b.maxHeight < 0)         ) return  1;
-                    if(!(a.maxHeight  < 0)        &&  (b.maxHeight < 0)         ) return -1;
+                    if(a.height == b.height) return 0;
+                    if( (a.height  < 0)        && !(b.height < 0)         ) return  1;
+                    if(!(a.height  < 0)        &&  (b.height < 0)         ) return -1;
                 }
 
-                var w = a.maxWidth  > 0 && b.maxWidth  > 0 ? Math.abs(a.maxWidth ) - Math.abs(b.maxWidth ) : 0;
-                var h = a.maxHeight > 0 && b.maxHeight > 0 ? Math.abs(a.maxHeight) - Math.abs(b.maxHeight) : 0;
+                var w = a.width  > 0 && b.width  > 0 ? Math.abs(a.width ) - Math.abs(b.width ) : 0;
+                var h = a.height > 0 && b.height > 0 ? Math.abs(a.height) - Math.abs(b.height) : 0;
                 return w == 0 ? h : w;
             });
         });
