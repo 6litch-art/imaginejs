@@ -27,8 +27,8 @@
     transition-delay: 0s;
 }
 
-img[data-src] { transition:all 0.25s ease !important; }
-img[data-src]:not(.loaded) {
+img[data-src]:not(.lazybox) { transition:all 0.25s ease !important; }
+img[data-src]:not(.lazybox):not(.loaded) {
 	opacity: 0;
 	visibility: hidden;
 }
