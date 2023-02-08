@@ -157,8 +157,26 @@ $.fn.serializeObject = function () {
 
         Imagine.updateImageSet($(el).find("img[data-srcset]"));
         Imagine.loadImages($(el).find("img[data-src]"));
-
+        Imagine.observeElement(el);
         return this;
+    }
+
+    Imagine.observeElement = function (el) {
+
+        const observer = new MutationObserver(function(mutations_list) {
+            mutations_list.forEach(function(mutation) {
+                mutation.addedNodes.forEach(function(node) {
+
+                    $(node).find("img[data-src]").each(function() {
+                        Imagine.loadImages($(node).find("img[data-src]"));
+                    });
+                });
+            });
+        });
+
+        $(el).each(function () {
+            observer.observe(this, { subtree: true, childList: true });
+        })
     }
 
     Imagine.findImages = function (container) {
@@ -232,6 +250,10 @@ $.fn.serializeObject = function () {
             {
                 gridX = parseInt($(this).data("x")) || 1;
                 gridY = parseInt($(this).data("y")) || 1;
+
+                var image = metadata[i];
+                if(image == undefined) return;
+
                 w = metadata[i].width;
                 h = metadata[i].height;
 
@@ -377,6 +399,10 @@ $.fn.serializeObject = function () {
             $(imageResponsiveList).each(function() { _payload(this); });
             Imagine.loadImages(imageResponsiveList);
         });
+        window.addEventListener("resize", function() {
+            $(imageResponsiveList).each(function() { _payload(this); });
+            Imagine.loadImages(imageResponsiveList);
+        });
         window.addEventListener("orientationChange", function() {
             $(imageResponsiveList).each(function() { _payload(this); });
             Imagine.loadImages(imageResponsiveList);
@@ -450,6 +476,7 @@ $.fn.serializeObject = function () {
             if(!lazyImages.length) lazyImages = document.querySelectorAll("img[data-src]:not(.loaded)");
 
             lazyImages = Array.from(lazyImages).filter(i => i.dataset.src);
+
             if ("IntersectionObserver" in window) {
 
                 let options = { root:null, rootMargin: Imagine.get("threshold") };
