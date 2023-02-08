@@ -158,6 +158,7 @@ $.fn.serializeObject = function () {
         Imagine.updateImageSet($(el).find("img[data-srcset]"));
         Imagine.loadImages($(el).find("img[data-src]"));
         Imagine.observeElement(el);
+
         return this;
     }
 
@@ -167,9 +168,7 @@ $.fn.serializeObject = function () {
             mutations_list.forEach(function(mutation) {
                 mutation.addedNodes.forEach(function(node) {
 
-                    $(node).find("img[data-src]").each(function() {
-                        Imagine.loadImages($(node).find("img[data-src]"));
-                    });
+                    Imagine.loadImages($(node).find("img[data-src]"));
                 });
             });
         });
