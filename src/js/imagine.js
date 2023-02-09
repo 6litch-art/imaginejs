@@ -471,6 +471,7 @@ $.fn.serializeObject = function () {
     }
 
     var imageObserver = null;
+    var lazyObserver = null;
     var imageResponsiveList = [];
     Imagine.loadImages = function (images = [])
     {
@@ -494,6 +495,7 @@ $.fn.serializeObject = function () {
                             var lazybox = image.closest(".lazybox");
 
                             image.onload = function() {
+
                                 this.classList.add("loaded");
                                 this.classList.remove("loading");
 
@@ -501,6 +503,15 @@ $.fn.serializeObject = function () {
                                 if(lazybox) lazybox.classList.remove("loading");
 
                                 window.dispatchEvent(new CustomEvent('imagine:new', {detail:image}));
+                                lazyObserver = lazyObserver ?? new MutationObserver((changes) => {
+                                    changes.forEach(change => {
+
+                                        if(change.attributeName.includes('data-src'))
+                                            image.src = image.dataset.src; // @todo: check if responsive `srcset` list
+                                    });
+                                });
+
+                                lazyObserver.observe(image, {attributes : true});
                             };
 
                             if(lazybox) lazybox.classList.add("loading");
@@ -568,8 +579,7 @@ $.fn.serializeObject = function () {
             if (!Imagine.largestImageLoaded(this))
                 imageResponsiveList.push(this);
 
-            if (this.dataset.src && this.dataset.src != "undefined")
-                $(this).attr("src", this.dataset.src);
+            $(this).attr("src", this.dataset.src);
         });
     }
 
