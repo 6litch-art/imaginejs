@@ -168,7 +168,11 @@ $.fn.serializeObject = function () {
             mutations_list.forEach(function(mutation) {
                 mutation.addedNodes.forEach(function(node) {
 
-                    Imagine.loadImages($(node).find("img[data-src]"));
+                    var lazyImages = $(node).find("img[data-src]");
+                        lazyImages = Array.from(lazyImages).filter(i => i.dataset.src);
+                        lazyImages.forEach(function (image) {
+                            imageObserver.observe(image);
+                        });
                 });
             });
         });
@@ -297,7 +301,7 @@ $.fn.serializeObject = function () {
 
                 $(this).on("click", function() { $(this).toggleClass("active"); });
 
-                $(window).trigger("load.imagine");
+                $(window).trigger("imagine");
             });
         });
     };
@@ -466,6 +470,7 @@ $.fn.serializeObject = function () {
         return candidates[candidates.length - 1].src == src;
     }
 
+    var imageObserver = null;
     var imageResponsiveList = [];
     Imagine.loadImages = function (images = [])
     {
@@ -479,10 +484,11 @@ $.fn.serializeObject = function () {
             if ("IntersectionObserver" in window) {
 
                 let options = { root:null, rootMargin: Imagine.get("threshold") };
-                var imageObserver = new IntersectionObserver(function (entries, observer) {
+                imageObserver = imageObserver ?? new IntersectionObserver(function (entries, observer) {
 
                     entries.forEach(function (entry) {
-                        if (entry.isIntersecting) {
+
+                        if (entry.isIntersecting && !entry.target.classList.contains("loaded")) {
 
                             var image = entry.target;
                             var lazybox = image.closest(".lazybox");
@@ -490,14 +496,17 @@ $.fn.serializeObject = function () {
                             image.onload = function() {
                                 this.classList.add("loaded");
                                 this.classList.remove("loading");
+
                                 if(lazybox) lazybox.classList.add("loaded");
                                 if(lazybox) lazybox.classList.remove("loading");
+
+                                window.dispatchEvent(new CustomEvent('imagine:new', {detail:image}));
                             };
 
                             if(lazybox) lazybox.classList.add("loading");
                             image.classList.add("loading");
-
                             image.src = image.dataset.src;
+
                             imageObserver.unobserve(image);
 
                             var index = imageResponsiveList.indexOf(image);
@@ -527,7 +536,10 @@ $.fn.serializeObject = function () {
                         var scrollTop = window.pageYOffset;
                         images.forEach(function (img) {
                             if (img.offsetTop < (window.innerHeight + scrollTop)) {
-                                img.src = img.dataset.src;
+
+                                if (image.dataset.src && image.dataset.src != "undefined")
+                                    image.src = image.dataset.src;
+
                                 img.classList.add('loaded');
                             }
 
@@ -556,7 +568,7 @@ $.fn.serializeObject = function () {
             if (!Imagine.largestImageLoaded(this))
                 imageResponsiveList.push(this);
 
-            if (this.dataset.src)
+            if (this.dataset.src && this.dataset.src != "undefined")
                 $(this).attr("src", this.dataset.src);
         });
     }
