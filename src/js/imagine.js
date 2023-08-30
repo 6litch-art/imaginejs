@@ -41,6 +41,10 @@ $.fn.serializeObject = function () {
         "threshold"       : "25%"
     };
 
+    var Assets = Imagine.assets = {
+        "error": "data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcKICAgdmVyc2lvbj0iMS4wIgogICB3aWR0aD0iMTUwLjExODc3cHQiCiAgIGhlaWdodD0iMTQ5LjY5MDk4cHQiCiAgIHZpZXdCb3g9IjAgMCAxNTAuMTE4NzcgMTQ5LjY5MDk4IgogICBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCIKICAgaWQ9InN2ZzEwIgogICBzb2RpcG9kaTpkb2NuYW1lPSJpbWFnZS1lcnJvci5zdmciCiAgIHhtbDpzcGFjZT0icHJlc2VydmUiCiAgIGlua3NjYXBlOmV4cG9ydC1maWxlbmFtZT0iZXJyb3ItaW1hZ2UtZ2VuZXJpYy5zdmciCiAgIGlua3NjYXBlOmV4cG9ydC14ZHBpPSI5NiIKICAgaW5rc2NhcGU6ZXhwb3J0LXlkcGk9Ijk2IgogICBpbmtzY2FwZTp2ZXJzaW9uPSIxLjIuMiAoYjBhODQ4NjUsIDIwMjItMTItMDEpIgogICB4bWxuczppbmtzY2FwZT0iaHR0cDovL3d3dy5pbmtzY2FwZS5vcmcvbmFtZXNwYWNlcy9pbmtzY2FwZSIKICAgeG1sbnM6c29kaXBvZGk9Imh0dHA6Ly9zb2RpcG9kaS5zb3VyY2Vmb3JnZS5uZXQvRFREL3NvZGlwb2RpLTAuZHRkIgogICB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciCiAgIHhtbG5zOnN2Zz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjxkZWZzCiAgICAgaWQ9ImRlZnMxNCIgLz48c29kaXBvZGk6bmFtZWR2aWV3CiAgICAgaWQ9Im5hbWVkdmlldzEyIgogICAgIHBhZ2Vjb2xvcj0iI2ZmZmZmZiIKICAgICBib3JkZXJjb2xvcj0iIzAwMDAwMCIKICAgICBib3JkZXJvcGFjaXR5PSIwLjI1IgogICAgIGlua3NjYXBlOnNob3dwYWdlc2hhZG93PSIyIgogICAgIGlua3NjYXBlOnBhZ2VvcGFjaXR5PSIwLjAiCiAgICAgaW5rc2NhcGU6cGFnZWNoZWNrZXJib2FyZD0iMCIKICAgICBpbmtzY2FwZTpkZXNrY29sb3I9IiNkMWQxZDEiCiAgICAgaW5rc2NhcGU6ZG9jdW1lbnQtdW5pdHM9InB0IgogICAgIHNob3dncmlkPSJmYWxzZSIKICAgICBpbmtzY2FwZTp6b29tPSIwLjkxNjA2ODU5IgogICAgIGlua3NjYXBlOmN4PSIzMS4xMTEyMDgiCiAgICAgaW5rc2NhcGU6Y3k9IjExNi44MDM0OCIKICAgICBpbmtzY2FwZTp3aW5kb3ctd2lkdGg9IjEzMDkiCiAgICAgaW5rc2NhcGU6d2luZG93LWhlaWdodD0iNDU2IgogICAgIGlua3NjYXBlOndpbmRvdy14PSIwIgogICAgIGlua3NjYXBlOndpbmRvdy15PSIzOCIKICAgICBpbmtzY2FwZTp3aW5kb3ctbWF4aW1pemVkPSIwIgogICAgIGlua3NjYXBlOmN1cnJlbnQtbGF5ZXI9ImcyNDI4IiAvPjxnCiAgICAgaWQ9ImcyNDI4IgogICAgIHRyYW5zZm9ybT0idHJhbnNsYXRlKDE5LjA1NjQ1NywtMjguNDYxNzk3KSI+PGcKICAgICAgIHRyYW5zZm9ybT0ibWF0cml4KDAuMSwwLDAsLTAuMSwtNDUsMjAwKSIKICAgICAgIGZpbGw9IiMwMDAwMDAiCiAgICAgICBzdHJva2U9Im5vbmUiCiAgICAgICBpZD0iZzgiPjxwYXRoCiAgICAgICAgIGQ9Im0gOTc1LDExOTUgYyAtNSwtMiAtMjIsLTYgLTM4LC05IC00OCwtMTEgLTEwNSwtNzIgLTEyMywtMTMyIC0xNCwtNDkgLTE0LC01OSAwLC0xMDggMTEsLTM4IDI3LC02NCA1NCwtODggMTA5LC05OCAyNzcsLTUxIDMxOCw4OSAxNCw0OCAxNCw1OCAwLDEwNiAtMTksNjUgLTY2LDExMyAtMTMxLDEzMyAtNDgsMTQgLTYxLDE1IC04MCw5IHogbSAxMjIsLTYzIGMgNjYsLTQ3IDgzLC0xNjIgMzUsLTIyOSAtNDcsLTY2IC0xNjIsLTgzIC0yMjksLTM1IC05Miw2NSAtODAsMjI1IDE5LDI3NiA0NiwyMyAxMzQsMTcgMTc1LC0xMiB6IgogICAgICAgICBpZD0icGF0aDIiIC8+PHBhdGgKICAgICAgICAgZD0ibSA5ODAsMTA0MCBjIDAsLTUzIDIsLTYwIDIwLC02MCAxOCwwIDIwLDcgMjAsNjAgMCw1MyAtMiw2MCAtMjAsNjAgLTE4LDAgLTIwLC03IC0yMCwtNjAgeiIKICAgICAgICAgaWQ9InBhdGg0IiAvPjxwYXRoCiAgICAgICAgIGQ9Im0gOTgwLDkyMCBjIDAsLTEzIDcsLTIwIDIwLC0yMCAxMywwIDIwLDcgMjAsMjAgMCwxMyAtNywyMCAtMjAsMjAgLTEzLDAgLTIwLC03IC0yMCwtMjAgeiIKICAgICAgICAgaWQ9InBhdGg2IiAvPjwvZz48cGF0aAogICAgICAgaWQ9InBhdGg5MTciCiAgICAgICBzdHlsZT0ib3BhY2l0eToxO2ZpbGw6Izc1NzU3NTtmaWxsLW9wYWNpdHk6MTtzdHJva2Utd2lkdGg6MC43NSIKICAgICAgIGQ9Ik0gNTUuOTEwNjcsODguMTAzNDk2IEEgMTUuNjk3MTA0LDE1LjQwNjQxNyAwIDAgMCA0MC4yMTMzOTksMTAzLjUwOTI2IDE1LjY5NzEwNCwxNS40MDY0MTcgMCAwIDAgNTUuOTEwNjcsMTE4LjkxNTAyIDE1LjY5NzEwNCwxNS40MDY0MTcgMCAwIDAgNzEuNjA3OTMsMTAzLjUwOTI2IDE1LjY5NzEwNCwxNS40MDY0MTcgMCAwIDAgNTUuOTEwNjcsODguMTAzNDk2IFogbSAwLjEwNjkzLDMuMjE2Nzk3IEEgMTIuMTExOTYzLDEyLjQwMjY1MSAwIDAgMSA2OC4xMjg5MywxMDMuNzIzMTIgMTIuMTExOTYzLDEyLjQwMjY1MSAwIDAgMSA1Ni4wMTc2LDExNi4xMjU5NiAxMi4xMTE5NjMsMTIuNDAyNjUxIDAgMCAxIDQzLjkwNjI3MSwxMDMuNzIzMTIgMTIuMTExOTYzLDEyLjQwMjY1MSAwIDAgMSA1Ni4wMTc2LDkxLjMyMDI5MyBaIiAvPjxyZWN0CiAgICAgICBzdHlsZT0ib3BhY2l0eToxO2ZpbGw6Izc1NzU3NTtmaWxsLW9wYWNpdHk6MTtzdHJva2Utd2lkdGg6MC43NSIKICAgICAgIGlkPSJyZWN0MTcwMyIKICAgICAgIHdpZHRoPSIzLjQ2OTUwNzUiCiAgICAgICBoZWlnaHQ9IjkuNjE5OTk4IgogICAgICAgeD0iNTQuMDk5NDk1IgogICAgICAgeT0iOTUuNjQ4MDE4IiAvPjxyZWN0CiAgICAgICBzdHlsZT0ib3BhY2l0eToxO2ZpbGw6Izc1NzU3NTtmaWxsLW9wYWNpdHk6MTtzdHJva2Utd2lkdGg6MC43NSIKICAgICAgIGlkPSJyZWN0MTcwNSIKICAgICAgIHdpZHRoPSIzLjMxMTgwMjkiCiAgICAgICBoZWlnaHQ9IjMuMzExODAyOSIKICAgICAgIHg9IjU0LjI1NzE4NyIKICAgICAgIHk9IjEwOC4wMjc4NSIgLz48cmVjdAogICAgICAgc3R5bGU9Im9wYWNpdHk6MTtmaWxsOiNlMGUwZTA7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlLXdpZHRoOjAuNzQwNjkiCiAgICAgICBpZD0icmVjdDIzMTEiCiAgICAgICB3aWR0aD0iMTUwLjExODc2IgogICAgICAgaGVpZ2h0PSIxNDkuNjkwOTkiCiAgICAgICB4PSItMTkuMDU2NDU4IgogICAgICAgeT0iMjguNDYxNzk2IiAvPjxnCiAgICAgICBpZD0iZzg1NiIKICAgICAgIHRyYW5zZm9ybT0ibWF0cml4KDMsMCwwLDMsLTExMS45ODQ1MywtMjA2LjY2NTY5KSI+PHBhdGgKICAgICAgICAgaWQ9InBhdGg5MTctNSIKICAgICAgICAgc3R5bGU9ImZpbGw6Izc1NzU3NTtmaWxsLW9wYWNpdHk6MTtzdHJva2Utd2lkdGg6MC43NSIKICAgICAgICAgZD0iTSA1NS45OTIyNyw4Ny45MjcwODIgQSAxNS42OTcxMDQsMTUuNDA2NDE3IDAgMCAwIDQwLjI5NDk5NiwxMDMuMzMyODUgMTUuNjk3MTA0LDE1LjQwNjQxNyAwIDAgMCA1NS45OTIyNywxMTguNzM4NjEgMTUuNjk3MTA0LDE1LjQwNjQxNyAwIDAgMCA3MS42ODk1MywxMDMuMzMyODUgMTUuNjk3MTA0LDE1LjQwNjQxNyAwIDAgMCA1NS45OTIyNyw4Ny45MjcwODIgWiBtIDAuMTA2OTMsMy4yMTY3OTcgQSAxMi4xMTE5NjMsMTIuNDAyNjUxIDAgMCAxIDY4LjIxMDUzLDEwMy41NDY3MSAxMi4xMTE5NjMsMTIuNDAyNjUxIDAgMCAxIDU2LjA5OTIsMTE1Ljk0OTU1IDEyLjExMTk2MywxMi40MDI2NTEgMCAwIDEgNDMuOTg3ODY4LDEwMy41NDY3MSAxMi4xMTE5NjMsMTIuNDAyNjUxIDAgMCAxIDU2LjA5OTIsOTEuMTQzODc5IFoiIC8+PHJlY3QKICAgICAgICAgc3R5bGU9ImZpbGw6Izc1NzU3NTtmaWxsLW9wYWNpdHk6MTtzdHJva2Utd2lkdGg6MC43NSIKICAgICAgICAgaWQ9InJlY3QxNzAzLTciCiAgICAgICAgIHdpZHRoPSIzLjQ2OTUwNzUiCiAgICAgICAgIGhlaWdodD0iOS42MTk5OTgiCiAgICAgICAgIHg9IjU0LjE4MTA5MSIKICAgICAgICAgeT0iOTUuNDcxNjAzIiAvPjxyZWN0CiAgICAgICAgIHN0eWxlPSJmaWxsOiM3NTc1NzU7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlLXdpZHRoOjAuNzUiCiAgICAgICAgIGlkPSJyZWN0MTcwNS02IgogICAgICAgICB3aWR0aD0iMy4zMTE4MDI5IgogICAgICAgICBoZWlnaHQ9IjMuMzExODAyOSIKICAgICAgICAgeD0iNTQuMzM4NzgzIgogICAgICAgICB5PSIxMDcuODUxNDMiIC8+PC9nPjwvZz48L3N2Zz4K"
+    };
+
     Imagine.epsilon = function(x1, x0) { return (x1-x0) < 1; }
     Imagine.reset = function(el = undefined) {
 
@@ -107,8 +111,8 @@ $.fn.serializeObject = function () {
         return null;
     };
 
-    Imagine.configure = function (options) {
-
+    Imagine.configure = function (options)
+    {
         var key, value;
         for (key in options) {
             value = options[key];
@@ -217,14 +221,17 @@ $.fn.serializeObject = function () {
 
                 let img = new Image()
                     img.onload = () => {
-                    resolve({
-                        src: src,
-                        width: img.naturalWidth,
-                        height: img.naturalHeight
-                    })
-                }
+                        resolve({
+                            src: src,
+                            width: img.naturalWidth,
+                            height: img.naturalHeight
+                        })
+                    }
 
-                img.onerror = reject;
+                img.onerror = () => {
+                    this.src = Assets.error;
+                    reject();
+                };
                 img.src = src;
             });
         }
@@ -514,6 +521,20 @@ $.fn.serializeObject = function () {
                                 lazyObserver.observe(image, {attributes : true});
                             };
 
+                            image.onerror = function() {
+
+                                image.src = Assets.error;
+
+                                this.classList.add("loaded");
+                                this.classList.remove("loading");
+
+                                if(lazybox) lazybox.classList.add("loaded");
+                                if(lazybox) lazybox.classList.remove("loading");
+
+                                window.dispatchEvent(new CustomEvent('imagine:new', {detail:image}));
+                                lazyObserver.observe(image, {attributes : true});
+                            };
+            
                             if(lazybox) lazybox.classList.add("loading");
                             image.classList.add("loading");
                             image.src = image.dataset.src;
