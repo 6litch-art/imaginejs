@@ -1,12 +1,12 @@
 {
   "name": "@glitchr/imaginejs",
-  "version": "1.0.42",
+  "version": "1.0.43",
   "description": "Imagine JS library",
   "main": "src/index.js",
   "repository": {
     "url": "ssh://git@gitlab.glitchr.dev:public-repository/javascript/imaginejs.git",
     "type": "git"
-  }, 
+  },
   "author": "Marco Meyer <marco.meyer@glitchr.io>",
   "license": "LGPL-3.0-or-later",
   "scripts": {
