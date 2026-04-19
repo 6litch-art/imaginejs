@@ -1,3 +1,4 @@
+import $ from 'jquery';
 $.fn.serializeObject = function () {
 
     const o = {};
@@ -25,7 +26,7 @@ $.fn.serializeObject = function () {
         root.Imagine = factory();
     }
 
-})(this, function () {
+})(window, function () {
 
     const Imagine = {};
           Imagine.version = '0.1.0';
